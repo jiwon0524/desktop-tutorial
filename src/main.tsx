@@ -248,8 +248,8 @@ function Onboarding({
       <section className="onboarding-hero">
         <div>
           <span className="eyebrow">StudyPilot AI 시작</span>
-          <h1>자료를 넣으면 바로 공부가 시작됩니다</h1>
-          <p>과목을 검색해 공부방을 만들고, PDF나 현재 화면을 인식해 필기, 중요 개념, 문제, 오답 복습으로 이어갑니다.</p>
+          <h1>자료를 읽고, 복습 가능한 공부 흐름으로.</h1>
+          <p>과목을 검색해 공부방을 만들고 PDF나 현재 화면을 분석합니다. StudyPilot AI는 필기, 중요 개념, 문제, 오답 복습으로 이어지는 학습 흐름을 제안합니다.</p>
         </div>
         <div className="onboarding-actions">
           <div className="search-box">
@@ -285,7 +285,7 @@ function Onboarding({
         <div className="panel-title">
           <div>
             <span className="eyebrow">내 공부방</span>
-            <h2>선택한 과목 {selectedSubjects.length}개</h2>
+          <h2>선택한 공부방 {selectedSubjects.length}개</h2>
           </div>
           <Pill tone="warn">나중에 언제든 추가/삭제 가능</Pill>
         </div>
@@ -305,17 +305,17 @@ function Onboarding({
       <section className="subject-picker-grid">
         <article className="panel">
           <span className="eyebrow">중고등</span>
-          <h3>내신과 수능</h3>
+          <h3>내신 · 수능</h3>
           <p>국어, 영어, 수학, 과학, 사회, 한국사와 선택 과목까지 검색 기반으로 추가합니다.</p>
         </article>
         <article className="panel">
           <span className="eyebrow">대학생</span>
-          <h3>전공과 교양</h3>
+          <h3>전공 · 교양 · 실습</h3>
           <p>컴공, 간호학, 경영학, 회계학, 통계학, 공학수학 등 대학 과목을 AI 템플릿으로 시작합니다.</p>
         </article>
         <article className="panel">
           <span className="eyebrow">직접 입력</span>
-          <h3>없는 과목도 가능</h3>
+          <h3>검색에 없어도 생성</h3>
           <p>검색 결과가 없어도 입력한 이름으로 공부방, 암기카드, 문제 풀이 흐름을 생성합니다.</p>
         </article>
       </section>
@@ -361,7 +361,7 @@ function Dashboard({ current, goAnalyze }: { current: Subject; goAnalyze: () => 
         <div className="panel-title">
           <div>
             <span className="eyebrow">Core Loop</span>
-            <h2>분석 전에는 판단하지 않고, 자료가 들어오면 공부 루프를 만듭니다</h2>
+        <h2>분석 전에는 판단하지 않고, 근거가 생기면 학습 흐름을 제안합니다</h2>
           </div>
           <button className="primary" onClick={goAnalyze}><MonitorUp size={16} />자료 인식 시작</button>
         </div>
@@ -472,7 +472,7 @@ function Analyzer({ current }: { current: Subject }) {
         <div className="panel-title">
           <div>
             <span className="eyebrow">핵심 기능</span>
-            <h2>PDF와 현재 화면을 읽고, 공부 가능한 형태로 바꿉니다</h2>
+            <h2>PDF와 현재 화면을 읽고, 공부 가능한 단위로 정리합니다</h2>
           </div>
           <Pill tone="warn">브라우저 화면 공유 권한은 사용자가 직접 허용해야 합니다</Pill>
         </div>
