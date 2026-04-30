@@ -1,17 +1,17 @@
 :root {
-  --bg: #f6f8fb;
+  --bg: #f4f7fb;
   --panel: #ffffff;
-  --line: #e1e7ef;
-  --text: #152033;
+  --line: #dbe3ee;
+  --text: #101828;
   --muted: #64748b;
-  --blue: #2563eb;
-  --green: #16a34a;
+  --blue: #1f5eff;
+  --green: #0f9f6e;
   --teal: #0f766e;
-  --orange: #ea580c;
-  --purple: #7c3aed;
+  --orange: #d97706;
+  --purple: #6d5dfc;
   --red: #dc2626;
   --yellow: #fef3c7;
-  --shadow: 0 16px 40px rgba(23, 37, 84, 0.08);
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 14px 32px rgba(16, 24, 40, 0.06);
 }
 
 * {
@@ -21,7 +21,9 @@
 body {
   margin: 0;
   min-width: 320px;
-  background: var(--bg);
+  background:
+    linear-gradient(180deg, rgba(31, 94, 255, 0.06), transparent 340px),
+    var(--bg);
   color: var(--text);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -41,7 +43,7 @@ button {
   justify-content: center;
   gap: 8px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
   color: var(--text);
   min-height: 40px;
@@ -55,8 +57,9 @@ button:hover {
 
 .primary {
   border-color: var(--blue);
-  background: var(--blue);
+  background: linear-gradient(180deg, #2f6bff, #1f5eff);
   color: #fff;
+  box-shadow: 0 8px 18px rgba(31, 94, 255, 0.18);
 }
 
 .ghost {
@@ -150,9 +153,9 @@ button:hover {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(246, 248, 251, 0.92);
-  padding: 14px 24px;
+  border-bottom: 1px solid rgba(219, 227, 238, 0.8);
+  background: rgba(244, 247, 251, 0.86);
+  padding: 12px 24px;
   backdrop-filter: blur(16px);
 }
 
@@ -163,8 +166,8 @@ button:hover {
 }
 
 .brand img {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
 }
 
 .brand strong,
@@ -188,9 +191,9 @@ small,
 
 main {
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  gap: 22px;
-  width: min(1440px, 100%);
+  grid-template-columns: 286px minmax(0, 1fr);
+  gap: 18px;
+  width: min(1360px, 100%);
   margin: 0 auto;
   padding: 22px;
 }
@@ -207,13 +210,14 @@ main {
 .concept-card,
 .wrong-card {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 14px;
   background: var(--panel);
   box-shadow: var(--shadow);
 }
 
 .create-card {
   padding: 14px;
+  box-shadow: none;
 }
 
 .create-card input,
@@ -254,11 +258,13 @@ select {
   width: 100%;
   padding: 14px;
   text-align: left;
+  box-shadow: none;
 }
 
 .subject-card.active {
   border-color: var(--blue);
-  outline: 3px solid #dbeafe;
+  background: #f7faff;
+  outline: 3px solid rgba(31, 94, 255, 0.12);
 }
 
 .subject-head,
@@ -328,15 +334,17 @@ select {
 .hero {
   align-items: stretch;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fff;
-  padding: 24px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(31, 94, 255, 0.08), rgba(15, 159, 110, 0.05)),
+    #fff;
+  padding: 28px;
   box-shadow: var(--shadow);
 }
 
 .hero h1 {
   margin: 6px 0;
-  font-size: clamp(32px, 5vw, 58px);
+  font-size: clamp(36px, 5vw, 60px);
   line-height: 1;
 }
 
@@ -351,13 +359,14 @@ select {
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #f8fafc;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
   padding: 16px;
+  text-align: center;
 }
 
 .hero-stats strong {
-  font-size: 28px;
+  font-size: 20px;
 }
 
 .hero-stats span {
@@ -368,7 +377,7 @@ select {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding: 16px 0;
+  padding: 14px 0;
 }
 
 .study-strip {
@@ -403,9 +412,9 @@ select {
 .tabs .active,
 .style-grid .selected,
 .exam-toolbar .selected {
-  border-color: #bfdbfe;
-  background: #eff6ff;
-  color: #1d4ed8;
+  border-color: rgba(31, 94, 255, 0.22);
+  background: #eef4ff;
+  color: #1647c8;
 }
 
 .dashboard-grid,
@@ -432,7 +441,7 @@ select {
 .panel,
 .concept-card,
 .wrong-card {
-  padding: 18px;
+  padding: 20px;
 }
 
 .wide {
@@ -485,7 +494,7 @@ select {
 .mini-card,
 .rule-box {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 12px;
   background: #f8fafc;
   padding: 12px;
 }
@@ -527,7 +536,7 @@ select {
 .upload-box {
   min-height: 210px;
   border: 1px dashed #b8c5d8;
-  border-radius: 8px;
+  border-radius: 14px;
   background: #fbfdff;
   padding: 16px;
 }
@@ -545,7 +554,7 @@ select {
   gap: 10px;
   min-height: 240px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 14px;
   background: #fbfdff;
   padding: 18px;
 }
@@ -573,7 +582,7 @@ select {
 .analysis-output {
   margin-top: 16px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 14px;
   background: #fff;
   padding: 18px;
 }
@@ -586,7 +595,7 @@ select {
 
 .analysis-columns div {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 12px;
   background: #f8fafc;
   padding: 12px;
 }

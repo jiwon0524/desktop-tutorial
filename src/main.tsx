@@ -10,6 +10,7 @@ import {
   MonitorUp,
   Plus,
   Search,
+  ShieldCheck,
   Sparkles,
   Timer,
   Trash2,
@@ -201,14 +202,6 @@ function makeSubject(title: string): Subject {
   };
 }
 
-function ProgressBar({ value }: { value: number }) {
-  return (
-    <div className="progress" aria-label={`진도 ${value}%`}>
-      <span style={{ width: `${value}%` }} />
-    </div>
-  );
-}
-
 function Pill({ children, tone }: { children: React.ReactNode; tone?: "warn" }) {
   return <span className={`pill ${tone ?? ""}`}>{children}</span>;
 }
@@ -364,12 +357,12 @@ function Dashboard({ current, goAnalyze }: { current: Subject; goAnalyze: () => 
       </article>
 
       <article className="panel">
-        <span className="eyebrow">시험 준비</span>
-        <h3>{current.exam}</h3>
+        <span className="eyebrow">AI 판단 상태</span>
+        <h3>아직 판단하지 않았습니다</h3>
         <div className="d-day-list">
-          {current.plan.map((task) => (
-            <span key={task.day}>{task.day} · {task.title}</span>
-          ))}
+          <span>자료 분석 전: 진도율 계산 안 함</span>
+          <span>문제 풀이 전: 준비도 계산 안 함</span>
+          <span>PDF/화면 인식 후 AI가 근거와 함께 판단</span>
         </div>
       </article>
 
@@ -497,24 +490,24 @@ function Analyzer({ current }: { current: Subject }) {
         </div>
 
         <div className="analysis-output">
-          <span className="eyebrow">AI 정리 결과 미리보기</span>
+          <span className="eyebrow">AI 정리 결과</span>
           {hasInput || analysisReady ? (
             <div className="analysis-columns">
               <div>
                 <h3>자동 필기</h3>
-                <p>{current.title} 자료에서 {current.concepts[0]}, {current.concepts[1]}가 시험에 자주 나오는 핵심으로 감지되었습니다.</p>
+                <p>{current.title} 자료에서 보이는 텍스트와 화면 구조를 기준으로 초안 필기를 만듭니다. 실제 정확도는 사용자가 검토해야 합니다.</p>
               </div>
               <div>
                 <h3>중요 표시</h3>
-                <p>★ {current.concepts[0]} / ⚠ {current.concepts[1]} / 예상 문제: {current.question.concept}</p>
+                <p>★ 후보: {current.concepts[0]} / ⚠ 확인 필요: {current.concepts[1]} / 문제 후보: {current.question.concept}</p>
               </div>
               <div>
                 <h3>생성 문제</h3>
                 <p>{current.question.prompt}</p>
               </div>
               <div>
-                <h3>복습 예약</h3>
-                <p>틀린 문제는 1일 후, 3일 후, 7일 후 다시 나오도록 배치됩니다.</p>
+                <h3>AI 판단 대기</h3>
+                <p>진도율과 시험 준비도는 지금 판단하지 않습니다. 풀이 기록과 오답 데이터가 쌓이면 근거와 함께 계산합니다.</p>
               </div>
               <div>
                 <h3>화면/PDF 출처</h3>
@@ -801,13 +794,13 @@ function App() {
             </div>
             <div className="subject-list">
               {selectedSubjects.map((item) => (
-                <button className={`subject-card ${item.id === selectedSubjectId ? "active" : ""}`} onClick={() => setSelectedSubjectId(item.id)} key={item.id}>
-                  <div className="subject-head"><span className={`subject-dot ${item.color}`} /><span>{item.group}</span></div>
-                  <strong>{item.title}</strong><small>{item.exam}</small><ProgressBar value={item.progress} />
-                  <div className="subject-meta"><span>진도 {item.progress}%</span><span>준비도 {item.readiness}%</span></div>
-                </button>
-              ))}
-            </div>
+              <button className={`subject-card ${item.id === selectedSubjectId ? "active" : ""}`} onClick={() => setSelectedSubjectId(item.id)} key={item.id}>
+                <div className="subject-head"><span className={`subject-dot ${item.color}`} /><span>{item.group}</span></div>
+                  <strong>{item.title}</strong><small>{item.exam}</small>
+                  <div className="subject-meta"><span>AI 분석 전</span><span>자료 대기</span></div>
+              </button>
+            ))}
+          </div>
           </aside>
 
           <section className="content">
@@ -815,7 +808,10 @@ function App() {
               <>
                 <div className="hero">
                   <div><span className="eyebrow">{current.field}</span><h1>{current.title}</h1><p>{current.template}</p></div>
-                  <div className="hero-stats"><div><CheckCircle2 size={22} /><strong>{current.progress}%</strong><span>진도율</span></div><div><Timer size={22} /><strong>{current.readiness}%</strong><span>준비도</span></div></div>
+                  <div className="hero-stats">
+                    <div><ShieldCheck size={22} /><strong>분석 전</strong><span>AI 진도 판단 대기</span></div>
+                    <div><CheckCircle2 size={22} /><strong>근거 필요</strong><span>PDF/화면/풀이 데이터 필요</span></div>
+                  </div>
                 </div>
                 <div className="study-strip">
                   <div><Sparkles size={18} /><strong>핵심 행동</strong><span>{current.plan[0].detail}</span></div>
