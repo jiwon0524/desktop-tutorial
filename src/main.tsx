@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Bell,
@@ -37,65 +37,99 @@ const tabs: Array<[TabId, string]> = [
   ["alerts", "알림"]
 ];
 
-const subjectGroups = [
-  {
-    title: "중학생",
-    subjects: ["국어", "영어", "수학", "과학", "사회", "역사", "도덕", "기술가정", "한문"]
-  },
-  {
-    title: "고등학생",
-    subjects: [
-      "문학",
-      "독서",
-      "화법과 작문",
-      "언어와 매체",
-      "영어",
-      "수학 I",
-      "수학 II",
-      "미적분",
-      "확률과 통계",
-      "기하",
-      "통합과학",
-      "물리학",
-      "화학",
-      "생명과학",
-      "지구과학",
-      "통합사회",
-      "한국사",
-      "세계사",
-      "경제",
-      "정치와 법",
-      "사회문화"
-    ]
-  },
-  {
-    title: "대학생",
-    subjects: [
-      "컴퓨터공학",
-      "운영체제",
-      "데이터베이스",
-      "자료구조",
-      "알고리즘",
-      "소프트웨어공학",
-      "네트워크",
-      "인공지능",
-      "선형대수",
-      "공업수학",
-      "통계학",
-      "일반물리학",
-      "일반화학",
-      "생물학",
-      "간호학",
-      "임상병리학",
-      "경영학",
-      "회계학",
-      "경제학",
-      "마케팅",
-      "심리학",
-      "교육학"
-    ]
-  }
+const subjectUniverse = [
+  "국어",
+  "문학",
+  "독서",
+  "화법과 작문",
+  "언어와 매체",
+  "영어",
+  "영어 독해",
+  "영어 문법",
+  "수학",
+  "수학 I",
+  "수학 II",
+  "미적분",
+  "확률과 통계",
+  "기하",
+  "과학",
+  "통합과학",
+  "물리학",
+  "화학",
+  "생명과학",
+  "지구과학",
+  "사회",
+  "통합사회",
+  "한국사",
+  "세계사",
+  "동아시아사",
+  "경제",
+  "정치와 법",
+  "사회문화",
+  "생활과 윤리",
+  "윤리와 사상",
+  "도덕",
+  "역사",
+  "기술가정",
+  "한문",
+  "컴퓨터공학",
+  "프로그래밍",
+  "Python",
+  "Java",
+  "C언어",
+  "JavaScript",
+  "자료구조",
+  "알고리즘",
+  "운영체제",
+  "데이터베이스",
+  "SQL",
+  "소프트웨어공학",
+  "컴퓨터네트워크",
+  "인공지능",
+  "머신러닝",
+  "선형대수",
+  "이산수학",
+  "공업수학",
+  "미적분학",
+  "통계학",
+  "확률론",
+  "일반물리학",
+  "일반화학",
+  "일반생물학",
+  "유기화학",
+  "간호학",
+  "성인간호학",
+  "아동간호학",
+  "임상병리학",
+  "해부학",
+  "생리학",
+  "병리학",
+  "경영학",
+  "마케팅",
+  "회계학",
+  "재무관리",
+  "경제학",
+  "심리학",
+  "교육학",
+  "토익",
+  "토플",
+  "일본어",
+  "중국어",
+  "정보처리기사",
+  "컴퓨터활용능력",
+  "한국사능력검정시험",
+  "전산회계"
 ];
+
+function subjectSuggestions(query: string) {
+  const value = query.trim().toLowerCase();
+  if (!value) return [];
+  const exact = subjectUniverse.filter((name) => name.toLowerCase().includes(value));
+  const fuzzy = subjectUniverse.filter((name) =>
+    value.split(/\s+/).some((part) => name.toLowerCase().includes(part))
+  );
+  return Array.from(new Set([...exact, ...fuzzy])).slice(0, 8);
+}
 
 const fallbackResources = [
   {
@@ -191,23 +225,39 @@ function Onboarding({
   start: () => void;
 }) {
   const [query, setQuery] = useState("");
-  const filteredGroups = subjectGroups.map((group) => ({
-    ...group,
-    subjects: group.subjects.filter((name) => name.includes(query.trim()))
-  }));
+  const suggestions = subjectSuggestions(query);
+  const canCreate = query.trim().length > 0 && !selectedSubjects.some((subject) => subject.title === query.trim());
 
   return (
     <div className="onboarding">
       <section className="onboarding-hero">
         <div>
           <span className="eyebrow">StudyPilot AI 시작</span>
-          <h1>먼저 공부할 과목을 고르세요</h1>
-          <p>예시 과목은 자동으로 넣지 않습니다. 중학생, 고등학생, 대학생 과목 중 필요한 것만 직접 추가하고 빼면서 공부방을 만듭니다.</p>
+          <h1>과목을 검색해서 내 공부방을 만드세요</h1>
+          <p>과목을 전부 펼쳐놓지 않습니다. 중학생, 고등학생, 대학생 과목을 검색하면 AI가 맞는 학습 템플릿을 추천하고, 없는 과목도 직접 만들 수 있습니다.</p>
         </div>
         <div className="onboarding-actions">
           <div className="search-box">
             <Search size={16} />
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="과목 검색: 미적분, 운영체제, 간호학" />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="과목 검색: 미적분, 운영체제, 간호학, 토익" />
+          </div>
+          <div className="ai-search-results">
+            {query.trim() ? (
+              <>
+                {suggestions.map((name) => (
+                  <button key={name} onClick={() => addSubject(name)}>
+                    <Plus size={14} /> {name}
+                  </button>
+                ))}
+                {canCreate && (
+                  <button className="primary" onClick={() => addSubject(query.trim())}>
+                    <Brain size={14} /> "{query.trim()}" AI 과목 생성
+                  </button>
+                )}
+              </>
+            ) : (
+              <p>예: 중등 과학, 수학 II, 물리학, 데이터베이스, 성인간호학처럼 입력하세요.</p>
+            )}
           </div>
           <button className="primary" disabled={selectedSubjects.length === 0} onClick={start}>
             <Sparkles size={16} /> 선택한 과목으로 시작
@@ -237,19 +287,21 @@ function Onboarding({
       </section>
 
       <section className="subject-picker-grid">
-        {filteredGroups.map((group) => (
-          <article className="panel" key={group.title}>
-            <span className="eyebrow">{group.title}</span>
-            <h3>{group.title} 과목</h3>
-            <div className="catalog-list wide-list">
-              {group.subjects.map((name) => (
-                <button key={name} onClick={() => addSubject(name)}>
-                  <Plus size={14} /> {name}
-                </button>
-              ))}
-            </div>
-          </article>
-        ))}
+        <article className="panel">
+          <span className="eyebrow">중고등</span>
+          <h3>내신, 수능, 수행평가</h3>
+          <p>국어, 영어, 수학, 과학, 사회, 한국사와 선택 과목까지 검색 기반으로 추가합니다.</p>
+        </article>
+        <article className="panel">
+          <span className="eyebrow">대학생</span>
+          <h3>전공, 교양, 실습</h3>
+          <p>컴공, 간호학, 경영학, 회계학, 통계학, 공학수학 등 대학 과목을 AI 템플릿으로 시작합니다.</p>
+        </article>
+        <article className="panel">
+          <span className="eyebrow">직접 입력</span>
+          <h3>없는 과목도 가능</h3>
+          <p>검색 결과가 없어도 입력한 이름으로 공부방, 암기카드, 문제 풀이 흐름을 생성합니다.</p>
+        </article>
       </section>
     </div>
   );
@@ -348,6 +400,10 @@ function Analyzer({ current }: { current: Subject }) {
   const [fileName, setFileName] = useState("");
   const [screenMode, setScreenMode] = useState(false);
   const [screenMessage, setScreenMessage] = useState("");
+  const [captureImage, setCaptureImage] = useState("");
+  const [analysisReady, setAnalysisReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const hasInput = fileName || screenMode;
 
   async function startScreenCapture() {
@@ -357,12 +413,41 @@ function Analyzer({ current }: { current: Subject }) {
         return;
       }
       const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
-      stream.getTracks().forEach((track) => track.stop());
+      streamRef.current?.getTracks().forEach((track) => track.stop());
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play();
+      }
       setScreenMode(true);
-      setScreenMessage("화면 캡처 권한이 확인되었습니다. 실제 AI 연동 시 현재 화면을 요약/필기/문제로 변환합니다.");
+      setCaptureImage("");
+      setAnalysisReady(false);
+      setScreenMessage("화면 공유가 연결되었습니다. 캡처 버튼을 누르면 현재 프레임을 공부 자료로 변환합니다.");
     } catch {
       setScreenMessage("화면 공유가 취소되었습니다. 버튼을 다시 누르면 브라우저 권한 창이 열립니다.");
     }
+  }
+
+  function captureScreenFrame() {
+    const video = videoRef.current;
+    if (!video || video.videoWidth === 0) {
+      setScreenMessage("화면 미리보기가 준비되면 다시 캡처하세요.");
+      return;
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext("2d");
+    context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+    setCaptureImage(canvas.toDataURL("image/png"));
+    setAnalysisReady(true);
+    setScreenMessage("화면 캡처가 완료되었습니다. 아래에 AI 정리 결과가 생성되었습니다.");
+  }
+
+  function analyzePdfFile(file: File | undefined) {
+    if (!file) return;
+    setFileName(file.name);
+    setAnalysisReady(true);
   }
 
   return (
@@ -384,7 +469,7 @@ function Analyzer({ current }: { current: Subject }) {
             <input
               type="file"
               accept=".pdf,image/*"
-              onChange={(event) => setFileName(event.target.files?.[0]?.name ?? "")}
+              onChange={(event) => analyzePdfFile(event.target.files?.[0])}
             />
             {fileName && <span className="file-pill">선택됨: {fileName}</span>}
           </div>
@@ -394,14 +479,26 @@ function Analyzer({ current }: { current: Subject }) {
             <strong>현재 화면 인식</strong>
             <p>강의 화면, 웹페이지, PDF 뷰어, 문제 풀이 화면을 캡처해서 바로 정리하는 흐름입니다.</p>
             <button className="primary" onClick={startScreenCapture}>현재 화면 정리 시작</button>
+            {screenMode && <button onClick={captureScreenFrame}>현재 프레임 캡처</button>}
             {screenMode && <span className="file-pill">화면 인식 모드 준비됨</span>}
             {screenMessage && <p className="hint-text">{screenMessage}</p>}
           </div>
         </div>
 
+        <div className="screen-preview-grid">
+          <div className="screen-preview">
+            <strong>실시간 화면 미리보기</strong>
+            <video ref={videoRef} muted playsInline />
+          </div>
+          <div className="screen-preview">
+            <strong>캡처된 공부 화면</strong>
+            {captureImage ? <img src={captureImage} alt="캡처된 화면" /> : <p>아직 캡처된 화면이 없습니다.</p>}
+          </div>
+        </div>
+
         <div className="analysis-output">
           <span className="eyebrow">AI 정리 결과 미리보기</span>
-          {hasInput ? (
+          {hasInput || analysisReady ? (
             <div className="analysis-columns">
               <div>
                 <h3>자동 필기</h3>
@@ -418,6 +515,14 @@ function Analyzer({ current }: { current: Subject }) {
               <div>
                 <h3>복습 예약</h3>
                 <p>틀린 문제는 1일 후, 3일 후, 7일 후 다시 나오도록 배치됩니다.</p>
+              </div>
+              <div>
+                <h3>화면/PDF 출처</h3>
+                <p>{fileName ? `파일: ${fileName}` : captureImage ? "현재 화면 캡처" : "화면 인식 대기 중"}</p>
+              </div>
+              <div>
+                <h3>다음 액션</h3>
+                <p>이 결과를 AI 필기, 암기카드, 기출 변형 문제에 자동 반영하는 단계로 연결됩니다.</p>
               </div>
             </div>
           ) : (

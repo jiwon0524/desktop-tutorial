@@ -102,6 +102,20 @@ button:hover {
   gap: 10px;
 }
 
+.ai-search-results {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8fafc;
+  padding: 10px;
+}
+
+.ai-search-results p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .selected-subjects {
   margin: 14px 0;
 }
@@ -566,7 +580,7 @@ select {
 
 .analysis-columns {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -582,6 +596,42 @@ select {
   display: grid;
   align-content: center;
   justify-items: start;
+}
+
+.screen-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.screen-preview {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 14px;
+}
+
+.screen-preview video,
+.screen-preview img {
+  width: 100%;
+  min-height: 220px;
+  max-height: 320px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #0f172a;
+}
+
+.screen-preview p {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  margin: 0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: var(--muted);
 }
 
 .upload-box p {
@@ -812,6 +862,7 @@ mark {
   .subject-picker-grid,
   .analyzer-grid,
   .analysis-columns,
+  .screen-preview-grid,
   .learning-loop,
   .style-grid,
   .download-grid,
