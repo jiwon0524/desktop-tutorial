@@ -1,0 +1,17 @@
+{
+  "name": "StudyPilot AI",
+  "short_name": "StudyPilot",
+  "description": "AI 기반 전과목 시험공부 플랫폼",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f6f8fb",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
