@@ -8,10 +8,32 @@ export type Question = {
   concept: string;
 };
 
+export type Resource = {
+  title: string;
+  provider: string;
+  kind: string;
+  level: string;
+  language: string;
+  license: string;
+  note: string;
+};
+
+export type Flashcard = {
+  front: string;
+  back: string;
+};
+
+export type StudyTask = {
+  day: string;
+  title: string;
+  detail: string;
+};
+
 export type Subject = {
   id: string;
   title: string;
   field: string;
+  group: string;
   exam: string;
   progress: number;
   readiness: number;
@@ -21,6 +43,9 @@ export type Subject = {
   concepts: string[];
   weak: string;
   question: Question;
+  resources: Resource[];
+  flashcards: Flashcard[];
+  plan: StudyTask[];
 };
 
 export type WrongNote = {
@@ -34,8 +59,10 @@ export type WrongNote = {
 export type TabId =
   | "overview"
   | "materials"
+  | "resources"
   | "notes"
   | "concepts"
+  | "flashcards"
   | "variants"
   | "solve"
   | "wrong"
