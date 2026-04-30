@@ -206,6 +206,28 @@ function Pill({ children, tone }: { children: React.ReactNode; tone?: "warn" }) 
   return <span className={`pill ${tone ?? ""}`}>{children}</span>;
 }
 
+function StudyVisual() {
+  return (
+    <div className="study-visual" aria-hidden="true">
+      <div className="visual-doc">
+        <span />
+        <strong>PDF lecture.pdf</strong>
+        <p />
+        <p />
+        <mark />
+      </div>
+      <div className="visual-panel">
+        <span>AI NOTE</span>
+        <strong>핵심 개념 4개</strong>
+        <div />
+        <div />
+        <button>문제 생성</button>
+      </div>
+      <div className="scan-line" />
+    </div>
+  );
+}
+
 function Onboarding({
   selectedSubjects,
   addSubject,
@@ -226,8 +248,8 @@ function Onboarding({
       <section className="onboarding-hero">
         <div>
           <span className="eyebrow">StudyPilot AI 시작</span>
-          <h1>과목을 검색해서 내 공부방을 만드세요</h1>
-          <p>과목을 전부 펼쳐놓지 않습니다. 중학생, 고등학생, 대학생 과목을 검색하면 AI가 맞는 학습 템플릿을 추천하고, 없는 과목도 직접 만들 수 있습니다.</p>
+          <h1>자료를 넣으면 바로 공부가 시작됩니다</h1>
+          <p>과목을 검색해 공부방을 만들고, PDF나 현재 화면을 인식해 필기, 중요 개념, 문제, 오답 복습으로 이어갑니다.</p>
         </div>
         <div className="onboarding-actions">
           <div className="search-box">
@@ -256,6 +278,7 @@ function Onboarding({
             <Sparkles size={16} /> 선택한 과목으로 시작
           </button>
         </div>
+        <StudyVisual />
       </section>
 
       <section className="selected-subjects panel">
@@ -282,12 +305,12 @@ function Onboarding({
       <section className="subject-picker-grid">
         <article className="panel">
           <span className="eyebrow">중고등</span>
-          <h3>내신, 수능, 수행평가</h3>
+          <h3>내신과 수능</h3>
           <p>국어, 영어, 수학, 과학, 사회, 한국사와 선택 과목까지 검색 기반으로 추가합니다.</p>
         </article>
         <article className="panel">
           <span className="eyebrow">대학생</span>
-          <h3>전공, 교양, 실습</h3>
+          <h3>전공과 교양</h3>
           <p>컴공, 간호학, 경영학, 회계학, 통계학, 공학수학 등 대학 과목을 AI 템플릿으로 시작합니다.</p>
         </article>
         <article className="panel">
@@ -338,7 +361,7 @@ function Dashboard({ current, goAnalyze }: { current: Subject; goAnalyze: () => 
         <div className="panel-title">
           <div>
             <span className="eyebrow">Core Loop</span>
-            <h2>자료를 넣으면 공부 루프가 자동으로 만들어집니다</h2>
+            <h2>분석 전에는 판단하지 않고, 자료가 들어오면 공부 루프를 만듭니다</h2>
           </div>
           <button className="primary" onClick={goAnalyze}><MonitorUp size={16} />자료 인식 시작</button>
         </div>
@@ -449,7 +472,7 @@ function Analyzer({ current }: { current: Subject }) {
         <div className="panel-title">
           <div>
             <span className="eyebrow">핵심 기능</span>
-            <h2>PDF와 현재 화면을 인식해서 공부 자료로 정리</h2>
+            <h2>PDF와 현재 화면을 읽고, 공부 가능한 형태로 바꿉니다</h2>
           </div>
           <Pill tone="warn">브라우저 화면 공유 권한은 사용자가 직접 허용해야 합니다</Pill>
         </div>
@@ -458,7 +481,7 @@ function Analyzer({ current }: { current: Subject }) {
           <div className="capture-card">
             <Upload size={26} />
             <strong>PDF/이미지 업로드</strong>
-            <p>교재 PDF, 강의자료, 시험지, 필기 사진을 넣으면 요약, 필기, 중요 개념, 문제를 만듭니다.</p>
+            <p>교재, 강의자료, 시험지, 필기 사진을 넣으면 읽기 쉬운 필기와 문제 초안을 만듭니다.</p>
             <input
               type="file"
               accept=".pdf,image/*"
@@ -470,7 +493,7 @@ function Analyzer({ current }: { current: Subject }) {
           <div className="capture-card">
             <MonitorUp size={26} />
             <strong>현재 화면 인식</strong>
-            <p>강의 화면, 웹페이지, PDF 뷰어, 문제 풀이 화면을 캡처해서 바로 정리하는 흐름입니다.</p>
+            <p>강의 화면, 웹페이지, PDF 뷰어를 캡처해 지금 보고 있는 내용을 정리합니다.</p>
             <button className="primary" onClick={startScreenCapture}>현재 화면 정리 시작</button>
             {screenMode && <button onClick={captureScreenFrame}>현재 프레임 캡처</button>}
             {screenMode && <span className="file-pill">화면 인식 모드 준비됨</span>}
