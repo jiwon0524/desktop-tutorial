@@ -2,7 +2,7 @@
 
 AI 기반 전과목 시험공부 플랫폼 MVP입니다.
 
-현재 버전은 실제 AI API 연결 전, mock 데이터로 전체 학습 흐름을 체험할 수 있는 정적 PWA 웹앱입니다.
+현재 버전은 실제 AI API 연결 전, mock 데이터로 전체 학습 흐름을 체험할 수 있는 React + Vite + TypeScript 기반 PWA 웹앱입니다.
 
 ## 포함 기능
 
@@ -22,12 +22,22 @@ AI 기반 전과목 시험공부 플랫폼 MVP입니다.
 - 약점 분석 대시보드
 - 다운로드/PWA 안내 페이지
 
+## 기술 스택
+
+- React
+- Vite
+- TypeScript
+- Tailwind CSS 설정 포함
+- PWA manifest/service worker
+- mock data 기반 프론트엔드 MVP
+
 ## 실행 방법
 
-의존성 설치 없이 실행할 수 있습니다.
+의존성을 설치한 뒤 개발 서버를 실행합니다.
 
 ```powershell
-python -m http.server 5173
+npm install
+npm run dev
 ```
 
 브라우저에서 접속:
@@ -36,14 +46,14 @@ python -m http.server 5173
 http://localhost:5173
 ```
 
-Python이 없다면 `index.html`을 직접 열어도 대부분의 UI를 확인할 수 있습니다. 단, PWA service worker는 로컬 서버에서 확인하는 것을 권장합니다.
+정식 Vite 앱이므로 `index.html`을 직접 여는 방식이 아니라 개발 서버로 실행하는 것을 권장합니다.
 
 ## 향후 개발 방향
 
-1. React + Vite + TypeScript로 전환
-2. Supabase/PostgreSQL 저장소 연결
-3. Kakao OAuth 및 이메일 로그인 연결
-4. OpenAI API 기반 자료 분석/문제 생성
-5. PDF.js, OCR, Whisper 기반 자료/강의 분석
-6. Web Push 및 이메일 알림
-7. Kakao AlimTalk 확장 구조 추가
+1. Supabase/PostgreSQL 저장소 연결
+2. Kakao OAuth 및 이메일 로그인 연결
+3. OpenAI API 기반 자료 분석/문제 생성
+4. PDF.js, OCR, Whisper 기반 자료/강의 분석
+5. Web Push 및 이메일 알림
+6. Kakao AlimTalk 확장 구조 추가
+7. Windows/macOS/Android/iOS 패키징

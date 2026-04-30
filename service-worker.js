@@ -3,7 +3,9 @@ const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
-  "./src/app.js",
+  "./src/main.tsx",
+  "./src/data.ts",
+  "./src/types.ts",
   "./manifest.webmanifest",
   "./assets/icon.svg"
 ];
